@@ -17,6 +17,8 @@ unsigned long MillisCurrentForTable2;
 unsigned long MillisLastTimeStapForTable2 = 0;
 unsigned long millisElapsedForTable2 = 0; 
 
+bool DoubleHitCheckFor1 = false;
+bool DoubleHitCheckFor2 = false;
 
 //We are assigning the times we have one in ten seconds to "BufferValue"
 int BufferValueForTable1 = 0; 
@@ -77,12 +79,18 @@ void loop() {
       Serial.println("---------");
       Serial.println("Hit for table 1 value");
       Serial.println(HitForTable1);
-      Serial.println("---------");
-      if (HitForTable1 == 1){
+      Serial.println("---------"); 
+      if (HitForTable1 == 1 && !DoubleHitCheckFor1){
+        DoubleHitCheckFor1 = true;
+        DoubleHitCheckFor2 = false;
         HitForTable1 = 0;
         GreenColor();
         Serial.println("Hit for table 1!");
         Serial.println("-----");
+      }
+      else if(HitForTable1 == 1 && DoubleHitCheckFor1) { 
+        RedColor();
+        HitForTable1 =0;
       }
       BufferValueForTable1 = 0; 
       MillisLastTimeStapForTable1 = MillisCurrentForTable1;
@@ -107,11 +115,17 @@ void loop() {
     }
     if(BufferValueForTable2 >10 ){
       HitForTable2 ++; 
-      if (HitForTable2 >= 1){
+      if (HitForTable2 == 1 && !DoubleHitCheckFor2){
+        DoubleHitCheckFor1 = false;
+        DoubleHitCheckFor2 = true;
         HitForTable2 = 0;
         BlueColor();
         Serial.println("Hit for table 2!");
         Serial.println("-----");
+      }
+      else if(HitForTable2 == 1 && DoubleHitCheckFor2){
+        HitForTable2 = 0; 
+        RedColor();
       }
       BufferValueForTable2 = 0; 
       MillisLastTimeStapForTable2 = MillisCurrentForTable2;
