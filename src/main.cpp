@@ -8,7 +8,7 @@ const int Blue = 6;
 
 //Since we want to read values constantly,setting it to ten.
 const int SampleTime = 7;
-//We are assigning some values to be able to count how many ones in our output in ten seconds(coming from line five).
+//We are assigning some values to be able to count how many ones in our output in ten seconds.
 unsigned long MillisCurrentForTable1; 
 unsigned long MillisLastTimeStapForTable1 = 0;
 unsigned long millisElapsedForTable1 = 0; 
@@ -23,6 +23,7 @@ int BufferValueForTable1 = 0;
 int HitForTable1 = 0; 
 int BufferValueForTable2 = 0;
 int HitForTable2 = 0; 
+
 
 // -------
 // Color Options
@@ -65,23 +66,29 @@ void loop() {
 // Sensor1
   if (digitalRead(Table1Sensor) == LOW){
     BufferValueForTable1 ++; 
+    Serial.println(BufferValueForTable1);
   }
   if (millisElapsedForTable1 > SampleTime){
     if(BufferValueForTable1> 300){
       BufferValueForTable1 = 0; 
     }
-    if(BufferValueForTable1 >5 ){
+    if(BufferValueForTable1 >10 ){ // sensitivity
       HitForTable1 ++; 
-      if (HitForTable1 > 1){
+      Serial.println("---------");
+      Serial.println("Hit for table 1 value");
+      Serial.println(HitForTable1);
+      Serial.println("---------");
+      if (HitForTable1 == 1){
         HitForTable1 = 0;
         GreenColor();
         Serial.println("Hit for table 1!");
+        Serial.println("-----");
       }
       BufferValueForTable1 = 0; 
       MillisLastTimeStapForTable1 = MillisCurrentForTable1;
     }
     else {
-      Serial.println(BufferValueForTable1);
+      //Serial.println(BufferValueForTable1);
       BufferValueForTable1 = 0; 
       MillisLastTimeStapForTable1 = MillisCurrentForTable1;
     }
@@ -91,24 +98,26 @@ void loop() {
 // Sensor 2 
   if (digitalRead(Table2Sensor) == LOW){
     BufferValueForTable2 ++; 
+    Serial.println(BufferValueForTable2);
   }
   if (millisElapsedForTable2 > SampleTime){
     if(BufferValueForTable2> 300){
       BufferValueForTable2 = 0; 
       MillisLastTimeStapForTable2 = MillisCurrentForTable2;
     }
-    if(BufferValueForTable2 >5 ){
+    if(BufferValueForTable2 >10 ){
       HitForTable2 ++; 
-      if (HitForTable2 > 1){
+      if (HitForTable2 >= 1){
         HitForTable2 = 0;
         BlueColor();
         Serial.println("Hit for table 2!");
+        Serial.println("-----");
       }
       BufferValueForTable2 = 0; 
       MillisLastTimeStapForTable2 = MillisCurrentForTable2;
     }
     else {
-      Serial.println(BufferValueForTable2);
+      //Serial.println(BufferValueForTable2);
       BufferValueForTable2 = 0; 
       MillisLastTimeStapForTable2 = MillisCurrentForTable2;
     }
